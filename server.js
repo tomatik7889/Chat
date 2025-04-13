@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs')
 const path = require('path');
+const { Socket } = require("dgram");
 const indexHtmlFile = fs.readFileSync(path.join(__dirname, 'static', 'index.html'))
 const scriptFile = fs.readFileSync(path.join(__dirname, 'static', 'script.js'))
 const styleFile = fs.readFileSync(path.join(__dirname, 'static', 'style.css'))
@@ -17,3 +18,19 @@ const server = http.createServer((req,res)=>{
     return res.end('Error 404')
 });
 server.listen(3000); 
+
+
+
+
+io.on('connection', (socket) => {
+    console.log('a user connected. id - ' + socket.id);
+    let userNickname = 'user';
+    socket.on('set_nickname', (nickname) => {
+      userNickname = nickname;
+    });
+    socket.on('new_message', (message) => {
+      io.emit('message', userNickname + ' : ' + message);
+    });
+  });
+  
+  

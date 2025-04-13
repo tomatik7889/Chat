@@ -3,11 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat</title>
+    <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js" integrity="sha384-mkQ3/7FUtcGyoppY6bz/PORYoGqOl7/aSUMn2ymDOJcapfS6PHqxhRTMh1RR0Q6+" crossorigin="anonymous"></script>
+    <script src = "script.js"></script>
 </head>
 <body>
-    <h1>RoboChat</h1>
+    <main>
+        <h1 class="header">fimozChat</h1>
+        <ul id="message">
+            <li>Hello! Test message</li>
+        </ul>
+        <form id="form">
+            <input type="text" id = "input" placeholder = "Enter...">
+            <input type="submit" class = "submit" value = "Send">
+        </form>
+    </main>
 </body>
-<script src="script.js"></script>
+
 </html>
