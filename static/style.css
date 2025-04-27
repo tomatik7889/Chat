@@ -17,6 +17,9 @@ main {
     background-color: #304ffe;
     color: #ffffff;
     height: 4.5rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 #form {
     position: fixed;
