@@ -18,6 +18,36 @@ const server = http.createServer((req, res) => {
     }
     return res.end('Error 404');
 });
+function registerUser(req, res) {
+  let data = '';
+  req.on('data', function(chunk) {
+      data += chunk;
+  });
+  req.on('end', async function() {
+    try {
+      const user = JSON.parse(data);
+      if(!user.login || !user.password) {
+        return res.end('Empty login or password');
+      }
+      if(await db.isUserExist(user.login)) {
+        return res.end('User already exist');
+      }
+      await db.addUser(user);
+      return res.end('Registeration is successfull');
+    }
+    catch(e) {
+      return res.end('Error: ' + e);
+    }
+  });
+function login(req, res){
+  let data= '';
+req.on('data', function(chunk){
+  data += chunk;
+});
+req.on('end', function(){
+  console.log(data)
+})
+}
 server.listen(3000);
 const { Server } = require("socket.io");
 const io = new Server(server);
