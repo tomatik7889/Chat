@@ -39,13 +39,24 @@ function registerUser(req, res) {
       return res.end('Error: ' + e);
     }
   });
+}
 function login(req, res){
   let data= '';
 req.on('data', function(chunk){
   data += chunk;
 });
 req.on('end', function(){
-  console.log(data)
+  try{
+      const user = JSON.parse(data);
+      const token = await db.getAuthToken(user);
+      validAuthTokens.push(token);
+      res.writeHead(200);
+      res.end(token);
+}
+catch(e) {
+  res.writeHead(500);
+  return res.end('Error: ' +e);
+}
 })
 }
 server.listen(3000);
