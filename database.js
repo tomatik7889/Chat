@@ -50,7 +50,7 @@ module.exports = {
     try {
       return await db.all(
         `SELECT msg_id, content, login, user_id from message
-        JOIN user ON message.autor = user.user_id`
+         JOIN user ON message.autor = user.user_id`
         );
     } catch (dbError) {
       console.error(dbError);
@@ -61,5 +61,16 @@ module.exports = {
       `INSERT INTO message (content, autor) VALUES (?, ?)`,
       [msg, userId]
     );
+  },
+  isUserExist: async (login) => {
+    const candidate = await db.all(`SELECT * FROM user WHERE login = ?`, [login]);
+    return !!candidate.length;
+  },
+  addUser: async (user) => {
+    await db.run(
+      `INSERT INTO user (login, password) VALUES (?, ?)`,
+      [user.login, user.password]
+    );
   }
 };
+
