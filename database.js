@@ -1,4 +1,5 @@
 const fs = require("fs");
+const crypto = require("crypto");
 // Шлях до файлу, у якому буде наша база даних
 const dbFile = "./chat.db";
 const exists = fs.existsSync(dbFile);
@@ -37,7 +38,7 @@ dbWrapper
                 autor INTEGER,
                 FOREIGN KEY(autor) REFERENCES user(user_id)
             );`
-        );s
+        );
       } else {
         console.log(await db.all("SELECT * from user"));
       }
@@ -71,6 +72,16 @@ module.exports = {
       `INSERT INTO user (login, password) VALUES (?, ?)`,
       [user.login, user.password]
     );
+  },
+  getAuthToken: async (user) => {
+    const candidate = await db.all(`SELECT * FROM user WHERE login = ?`, [user.login]);
+    if(!candidate.length) {
+      throw 'Wrong login';
+    }
+    if(candidate[0].password !== user.password) {
+      throw 'Wrong password';
+    }
+    return candidate[0].user_id + '.' + candidate[0].login + '.' + crypto.randomBytes(20).toString('hex');
   }
 };
 
